@@ -27,6 +27,16 @@
    color: #319DA0;
    max-width: 230px;
 }
+.onMouse{
+    padding: 10px;
+    margin: 20px;
+    text-align: left;
+    background-color:#2C3333;
+    color: #319DA0;
+    max-width: 230px;
+    opacity: 60%;
+}
+
 .card-image{
     max-width: 210px;
     max-height: 295px;

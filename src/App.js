@@ -1,6 +1,7 @@
 import "./App.css";
-import { useEffect, useState,useRef } from "react";
-import ShowImage from "./ShowImage"
+import { useEffect, useState } from "react";
+import ActorCard from "./ActorCard"
+import ShowCard from "./ShowCard";
 import ActorImage from "./ActorImage";
 import TextField from "@mui/material/TextField";
 function App() {
@@ -58,18 +59,11 @@ function App() {
        
         return (
           <>
-
+            <ShowCard key={showObj.show.id}  id={showObj.show.id}
+      
+               name={showObj.show.name} rating={showObj.show.rating.average}/>
             
-            <div key={showObj.show.id} className="card">
-              <ShowImage className="car-image"
-                id={showObj.show.id}
-                key={showObj.show.id}
-                alt={showObj.show.name}
-              />
-              <h3>{showObj.show.name}</h3>
-              <div><img alt="star" src="https://img.icons8.com/emoji/15/FFFFFF/star-emoji.png"/>{showObj.show.rating.average}</div>
-              
-            </div>
+            
           </>
         );
       })
@@ -80,16 +74,8 @@ function App() {
       actorList.map((showObj) => {
         return (
           <>
+            <ActorCard  key={showObj.person.id}  id={showObj.person.id} name={showObj.person.name} gender={showObj.person.gender}/>
            
-            <div key={showObj.person.id} className="card">
-              <ActorImage
-                 key={showObj.person.id}
-                id={showObj.person.id}
-                alt={showObj.person.name}
-              />
-              <h3>{showObj.person.name}</h3>
-              <p>{showObj.person.gender}</p>
-            </div>
           </>
         );
       })
