@@ -1,16 +1,18 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import ActorCard from "./ActorCard"
-import ShowCard from "./ShowCard";
-import ActorImage from "./ActorImage";
+import ActorCard from "./components/ActorCard"
+import ShowCard from "./components/ShowCard";
+import ActorShow from "./components/ActorShow";
+import { Link, Navigate, NavLink, redirect, Route, Routes } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 function App() {
   const [searchItem, setSearchItem] = useState("");
   const [showList, setShowList] = useState([]);
   const [actorList, setActorList] = useState([]);
- 
-  const [checked, setChecked] = useState({ Actor: false, Shows: false });
   
+  const [checked, setChecked] = useState({ Actor: false, Shows: false });
+  const navigate = useNavigate();
   function handleChange(e) {
     const val = e.target.value;
     console.log("value", val, e);
@@ -19,32 +21,32 @@ function App() {
 
   async function getTheMovies(searchTerm) {
     
-    setActorList([])
+    
     const response = await fetch(`https://api.tvmaze.com/search/shows?q=${searchTerm}`);
         const data = await response.json();
         
         setShowList(data);
-    // fetch(`https://api.tvmaze.com/search/shows?q=${searchTerm}`)
-    // .then((res)=>res.json())
-    // .then((data)=>setShowList(data))
+        navigate('/Show')
+    
   }
 
  async function getTheActor(searchTerm) {
-   setShowList([])
+  
    const response = await fetch(`https://api.tvmaze.com/search/people?q=${searchTerm}`);
    const data = await response.json();
-   setActorList(data)
+   setActorList(data);
+   navigate('/Actor')
    
-    // fetch(`https://api.tvmaze.com/search/people?q=${searchTerm}`)
-    // .then((res)=>res.json())
-    // .then((data)=>setActorList(data))
   }
+ 
   useEffect(() => {
+      
       (async ()=>{
         if(checked.Shows === true) 
         await getTheMovies(searchItem);
         else if(checked.Actor === true)  
         await getTheActor(searchItem);
+        else  navigate('/')
       })();
      
    
@@ -81,7 +83,8 @@ function App() {
       })
     );
   }
-
+ 
+ 
   function changeRadio(e){
     setChecked(() => {
       return {
@@ -90,6 +93,7 @@ function App() {
         [e.target.value]: true,
       };
     });
+    
   };
 
   return (
@@ -110,7 +114,8 @@ function App() {
           </label>
 
           <label>
-            <input
+           <input
+              
               type="radio"
               checked={checked.Shows}
               value="Shows"
@@ -132,18 +137,27 @@ function App() {
           />
         </div>
       </div>
+      <Routes>
+                
+                {/* basic example */}
+                
+                
+                
+                <Route path="/Show" element={<div className="container">{displayShowUi()}</div>}/>
+                <Route path="/Actor" element={<div className="container">{displayActorUi()}</div>}/>
+                <Route path="/Actor/:id" element={<div className="container">{<ActorShow/>}</div>}/>
+                
+               
+                {/* <Route path="/birds" element={<Bird />} >
+                    <Route path=":birdId" element={<Parrot />}></Route>
+                    <Route path="edit" element={<EditBirdPage />}></Route>
+                </Route> */}
 
-      {/* result list */}
-      <div className="container">
-        {displayShowUi().length ? (
-          displayShowUi()
-        ) :( displayActorUi().length ? (
-          displayActorUi()
-        ) : (
-          <>No results found</>
-        ))}
-       
-      </div>
+                {/* for path not matching */}
+                <Route path="*" element={<p>No results found</p>}/>
+                
+            </Routes>
+      
     </>
   );
 }

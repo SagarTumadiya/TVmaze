@@ -1,4 +1,4 @@
-import "./App.css";
+import "../App.css";
 import ShowImage from "./ShowImage";
 
 import { useEffect, useState } from "react";
